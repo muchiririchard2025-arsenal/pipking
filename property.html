@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Property Details - RentHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4361ee;
+        }
+        .back-btn {
+            background: #4361ee;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .back-btn:hover {
+            background: #3a0ca3;
+        }
+
+        .property-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Carousel */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+        .slide {
+            min-width: 100%;
+            height: 100%;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Arrows */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            color: #4361ee;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .prev { left: 20px; }
+        .next { right: 20px; }
+
+        /* Property Info */
+        .property-info {
+            padding: 2rem;
+        }
+        .property-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        .property-info .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4361ee;
+            margin: 0.5rem 0;
+        }
+        .property-info p {
+            line-height: 1.7;
+            color: #475569;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            <span>RentHub</span>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Back to Listings
+        </button>
+    </header>
+
+    <div class="property-container">
+        <div class="carousel">
+            <div class="slides" id="slides-container">
+                <!-- Slides will be inserted by JavaScript -->
+            </div>
+            <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
+            <button class="carousel-btn next" id="nextBtn">&#10095;</button>
+        </div>
+
+        <div class="property-info" id="property-info">
+            <!-- Property info will be inserted by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Property data (in real app, this would come from a database)
+        const properties = {
+            1: {
+                title: "prestige hostels",
+                price: "5500ksh / month",
+                description: "Stunning loft in the heart of downtown with floor-to-ceiling windows, modern finishes, and city views. Walking distance to restaurants and transit.",
+                images: [
+                    "image/card3-1.jpg",
+                    "image/card1-1.jpg",
+                    "image/card3-3.jpg"
+                ]
+            },
+            2: {
+                title: "perez hostels",
+                price: "6500ksh / month",
+                description: "Bright and spacious apartment with panoramic city views. Features include hardwood floors, stainless steel appliances, and a private balcony.",
+                images: [
+                    "image/card3b.jpg",
+                    "image/card3-2.jpg",
+                    "image/card2-2.jpg"
+                ]
+            },
+            3: {
+                title: "Greenlife apartments",
+                price: "7500ksh / month",
+                description: " Enjoy sunrise views from your private terrace and resort-style amenities.",
+                images: [
+                    "image/card1-2.jpg",
+                    "image/prest 2.jpg",
+                    "image/card3a.jpg"
+                ]
+            },
+            4: {
+                title: "Jerusalem apartments",
+                price: "8000ksh/ month",
+                description: "Charming house with a large backyard, modern kitchen, and cozy fireplace. Perfect for families or remote workers.",
+                images: [
+                    "image/card2-3.jpg",
+                    "image/card4a.jpg",
+                    "image/card7a.jpg0"
+                ]
+            },
+            5: {
+                title: "Bagik flats",
+                price: "8600ksh/ month",
+                description: "Spacious 4-bedroom home in a quiet neighborhood with great schools. Features include a finished basement and two-car garage.",
+                images: [
+                    "image/card2-1.jpg",
+                    "image/card5b.jpg",
+                    "image/card7b.jpg0"
+                ]
+            },
+            6: {
+                title: "izak walton apartments",
+                price: "7200ksh/ month",
+                description: "Exclusive apartment with infinity pool, and open-concept living. Ultimate privacy and luxury.",
+                images: [
+                    "image/card6a.jpg",
+                    "image/card7d.jpg",
+                    "image/card7c.jpg0"
+                ]
+            }
+        };
+
+        // Get property ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id') || '1';
+        const property = properties[propertyId] || properties['1'];
+
+        // Render slides
+        const slidesContainer = document.getElementById('slides-container');
+        property.images.forEach(imgUrl => {
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            slide.innerHTML = `<img src="${imgUrl}" alt="Property image">`;
+            slidesContainer.appendChild(slide);
+        });
+
+        // Render property info
+        document.getElementById('property-info').innerHTML = `
+            <h1>${property.title}</h1>
+            <div class="price">${property.price}</div>
+            <p>${property.description}</p>
+        `;
+
+        // Carousel functionality
+        let currentIndex = 0;
+        const totalSlides = property.images.length;
+
+        function updateSlides() {
+            slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSlides();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateSlides();
+        });
+    </script>
+</body>
+</html>
